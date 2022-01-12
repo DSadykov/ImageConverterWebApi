@@ -1,5 +1,4 @@
 using ImageConverterWebApi.Services;
-using ImageConverterWebApi.Services.NameConverter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +9,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IImageConverter, ImageConverter>();
-builder.Services.AddTransient<INameConverter, NameConverter>();
 builder.Services.AddSingleton<ImageConverterService, ImageConverterService>();
 builder.Services.AddCors();
 
@@ -24,9 +22,8 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseCors(builder => builder.AllowAnyOrigin());
-
 app.UseAuthorization();
 
 app.MapControllers();

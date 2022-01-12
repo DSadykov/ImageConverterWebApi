@@ -10,6 +10,12 @@ namespace ImageConverterWebApi.Services
         {
             return _converter.Convert(imageBytes);
         }
+
+        public IFormFile ConvertImage(IFormFile imageFile)
+        {
+            return _converter.Convert(imageFile);
+        }
+
         public void SetConverter(AbstructConverter converter)
         {
             _converter = converter;
