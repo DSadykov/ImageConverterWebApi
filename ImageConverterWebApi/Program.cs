@@ -4,13 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IImageConverter, ImageConverter>();
-builder.Services.AddSingleton<ImageConverterService, ImageConverterService>();
-builder.Services.AddCors();
+ConfigureServices(builder);
 
 var app = builder.Build();
 
@@ -31,3 +25,14 @@ app.MapControllers();
 app.Urls.Add("http://*:7777");
 
 app.Run();
+
+static void ConfigureServices(WebApplicationBuilder builder)
+{
+    builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    builder.Services.AddTransient<IImageConverter, ImageConverter>();
+    builder.Services.AddTransient<ImageConverterService, ImageConverterService>();
+    builder.Services.AddCors();
+}

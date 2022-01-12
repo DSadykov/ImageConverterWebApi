@@ -2,7 +2,7 @@
 using System.Drawing.Imaging;
 using ImageConverterWebApi.Models;
 
-namespace ImageConverterWebApi.Services.Strategies;
+namespace ImageConverterWebApi.Services.Templates;
 
 public abstract class AbstructConverter
 {
@@ -20,16 +20,16 @@ public abstract class AbstructConverter
     public IFormFile Convert(IFormFile imageFile)
     {
         ImageFormat outputFormat = SetOutputFormat();
-        using (var inStream = new MemoryStream())
-        using (var outStream = new MemoryStream())
+        using var inStream = new MemoryStream();
+        using var outStream = new MemoryStream();
+        var imageStream = Image.FromStream(imageFile.OpenReadStream());
+        imageStream.Save(outStream, outputFormat);
+        var result = new FormFile(outStream, 0, outStream.Length, imageFile.Name, Path.ChangeExtension(imageFile.FileName, outputFormat.ToString()))
         {
-            imageFile.CopyTo(inStream);
-            var imageStream = Image.FromStream(inStream);
-            imageStream.Save(outStream, outputFormat);
-            var tmp = outputFormat.ToString();
-            return new FormFile(outStream, 0, outStream.Length, imageFile.Name, Path.ChangeExtension(imageFile.FileName, tmp));
-        }
+            Headers = new HeaderDictionary(),
+            ContentType = imageFile.ContentType,
+        };
+        return result;
     }
     protected abstract ImageFormat SetOutputFormat();
 }
-

@@ -1,4 +1,4 @@
-﻿using ImageConverterWebApi.Services.Strategies;
+﻿using ImageConverterWebApi.Services.Templates;
 
 namespace ImageConverterWebApi.Services
 {

@@ -20,20 +20,8 @@ public class ImageConverterController : ControllerBase
     }
 
     [HttpPost(Name = "ConvertImage")]
-    public async Task<IFormFile> /*string*/ Post([FromForm] InputImageModel imageModel)
+    public IFormFile Post([FromForm] InputImageModel imageModel)
     {
-        return await Task.Run(() => _imageConverter.ConvertImage(imageModel).ImageFile);
-        //return "2";
-    }
-    //[HttpPost(Name = "tmp")]
-    //public string Post([FromForm] string str)
-    //{
-    //    _logger.LogInformation("Post came");
-    //    return str;
-    //}
-    [HttpGet(Name = "123")]
-    public string Get()
-    {
-        return "123";
+        return _imageConverter.ConvertImage(imageModel);
     }
 }

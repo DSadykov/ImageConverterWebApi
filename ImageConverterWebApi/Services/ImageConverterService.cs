@@ -1,5 +1,5 @@
 ﻿using ImageConverterWebApi.Models;
-using ImageConverterWebApi.Services.Strategies;
+using ImageConverterWebApi.Services.Templates;
 
 namespace ImageConverterWebApi.Services;
 
@@ -12,15 +12,11 @@ public class ImageConverterService
         _imageConverter = imageConverter;
     }
 
-    public OutputImageModel ConvertImage(InputImageModel imageModel)
+    public IFormFile ConvertImage(InputImageModel imageModel)
     {
         SetConverter(imageModel.ExtensionTo);
         IFormFile? convertedImage = _imageConverter.ConvertImage(imageModel.ImageFile);
-        OutputImageModel newImageModel = new()
-        {
-            ImageFile = convertedImage,
-        };
-        return newImageModel;
+        return convertedImage;
     }
 
     private void SetConverter(string extensionTo)
