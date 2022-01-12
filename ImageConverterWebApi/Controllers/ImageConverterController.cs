@@ -12,7 +12,6 @@ public class ImageConverterController : ControllerBase
 
     private readonly ILogger<ImageConverterController> _logger;
     private readonly ImageConverterService _imageConverter;
-    private InputImageModel _imageModel;
     public ImageConverterController(ILogger<ImageConverterController> logger, ImageConverterService imageConverter)
     {
         _logger = logger;
@@ -20,9 +19,14 @@ public class ImageConverterController : ControllerBase
     }
 
     [HttpPost(Name = "PostImage")]
-    public async Task<OutputImageModel> Post([FromBody] InputImageModel imageModel)
+    public async Task<OutputImageModel> Post([FromForm] InputImageModel imageModel)
     {
-        _imageModel = imageModel;
-        return await _imageConverter.ConvertImage(_imageModel);
+        return await _imageConverter.ConvertImage(imageModel);
     }
+    //[HttpPost(Name = "PostImage")]
+    //public async Task<OutputImageModel> Post([FromForm] byte[] imageModel)
+    //{
+    //    var tmp = imageModel;
+    //    return new OutputImageModel() { ImageBytes = imageModel };
+    //}
 }
