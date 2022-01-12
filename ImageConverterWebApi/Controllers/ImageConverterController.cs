@@ -1,8 +1,6 @@
 using ImageConverterWebApi.Models;
 using ImageConverterWebApi.Services;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace ImageConverterWebApi.Controllers;
 

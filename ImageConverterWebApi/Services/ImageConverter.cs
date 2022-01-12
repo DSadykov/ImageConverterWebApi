@@ -1,24 +1,22 @@
 ﻿using ImageConverterWebApi.Services.Templates;
-using System.Drawing;
 
-namespace ImageConverterWebApi.Services
+namespace ImageConverterWebApi.Services;
+
+public class ImageConverter : IImageConverter
 {
-    public class ImageConverter : IImageConverter
+    private AbstructConverter _converter = new NullConvert();
+    public byte[] ConvertImage(byte[] imageBytes)
     {
-        private AbstructConverter _converter = new NullConvert();
-        public byte[] ConvertImage(byte[] imageBytes)
-        {
-            return _converter.Convert(imageBytes);
-        }
+        return _converter.Convert(imageBytes);
+    }
 
-        public IFormFile ConvertImage(IFormFile imageFile)
-        {
-            return _converter.Convert(imageFile);
-        }
+    public IFormFile ConvertImage(IFormFile imageFile)
+    {
+        return _converter.Convert(imageFile);
+    }
 
-        public void SetConverter(AbstructConverter converter)
-        {
-            _converter = converter;
-        }
+    public void SetConverter(AbstructConverter converter)
+    {
+        _converter = converter;
     }
 }

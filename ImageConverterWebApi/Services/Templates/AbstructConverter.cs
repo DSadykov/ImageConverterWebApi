@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
-using ImageConverterWebApi.Models;
 
 namespace ImageConverterWebApi.Services.Templates;
 
