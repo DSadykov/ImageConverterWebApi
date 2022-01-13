@@ -20,6 +20,7 @@ public class ImageConverterController : ControllerBase
     [HttpPost(Name = "ConvertImage")]
     public async Task<IFormFile> Post([FromForm] InputImageModel imageModel)
     {
+        _logger.LogInformation("Came {fileName} to extension {toExtension}", imageModel.ImageFile.FileName, imageModel.ExtensionTo);
         return await Task.Run((() => _imageConverter.ConvertImage(imageModel)));
     }
 }
