@@ -13,12 +13,8 @@ public class ImageConverterController : ControllerBase
     private readonly ImageConverterService _imageConverter;
     public ImageConverterController(ILogger<ImageConverterController> logger, ImageConverterService imageConverter)
     {
-        var tmp = new byte[] { 1, 2, 3, 5, 5, 7 };
-        var tmp2 = JsonConvert.SerializeObject(tmp);
-        logger.LogInformation(tmp2);
         _logger = logger;
         _imageConverter = imageConverter;
-        var tmo = Request;
     }
 
     [HttpPost(Name = "ConvertImage")]
