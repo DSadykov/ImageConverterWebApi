@@ -1,30 +1,22 @@
 ﻿using ImageConverterWebApi.Models;
-using ImageConverterWebApi.Services.NameConverter;
-using ImageConverterWebApi.Services.Strategies;
+using ImageConverterWebApi.Services.Templates;
 
 namespace ImageConverterWebApi.Services;
 
 public class ImageConverterService
 {
     private readonly IImageConverter _imageConverter;
-    private readonly INameConverter _nameConverter;
 
-    public ImageConverterService(IImageConverter imageConverter, INameConverter nameConverter)
+    public ImageConverterService(IImageConverter imageConverter)
     {
         _imageConverter = imageConverter;
-        _nameConverter = nameConverter;
     }
 
-    public async Task<OutputImageModel> ConvertImage(InputImageModel imageModel)
+    public IFormFile ConvertImage(InputImageModel imageModel)
     {
         SetConverter(imageModel.ExtensionTo);
-        var convertedBytes = _imageConverter.ConvertImage(imageModel.ImageBytes);
-        OutputImageModel newImageModel = new()
-        {
-            ImageBytes = convertedBytes,
-            ImageName = _nameConverter.ChangeExtension(imageModel.ImageName, imageModel.ExtensionTo)
-        };
-        return newImageModel;
+        IFormFile? convertedImage = _imageConverter.ConvertImage(imageModel.ImageFile);
+        return convertedImage;
     }
 
     private void SetConverter(string extensionTo)

@@ -1,7 +1,6 @@
 using ImageConverterWebApi.Models;
 using ImageConverterWebApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace ImageConverterWebApi.Controllers;
 
@@ -22,10 +21,10 @@ public class ImageConverterController : ControllerBase
         var tmo = Request;
     }
 
-    [HttpPost(Name = "PostImage")]
-    public async Task<OutputImageModel> Post([FromForm] InputImageModel imageModel)
+    [HttpPost(Name = "ConvertImage")]
+    public IFormFile Post([FromForm] InputImageModel imageModel)
     {
-        return await _imageConverter.ConvertImage(imageModel);
+        return _imageConverter.ConvertImage(imageModel);
     }
     //[HttpPost(Name = "PostImage")]
     //public async Task<OutputImageModel> Post(string imageModel)
