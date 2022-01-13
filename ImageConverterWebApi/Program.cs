@@ -20,7 +20,6 @@ app.UseRouting();
 app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseHttpLogging();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Urls.Add("http://*:7777");
