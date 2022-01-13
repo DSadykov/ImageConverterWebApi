@@ -1,4 +1,5 @@
-﻿using ImageConverterWebApi.Services.Templates;
+﻿using System;
+using ImageConverterWebApi.Services.Templates;
 
 namespace ImageConverterWebApi.Services;
 
@@ -13,6 +14,11 @@ public class ImageConverter : IImageConverter
     public IFormFile ConvertImage(IFormFile imageFile)
     {
         return _converter.Convert(imageFile);
+    }
+
+    public Type GetConverterType()
+    {
+        return _converter.GetType();
     }
 
     public void SetConverter(AbstructConverter converter)

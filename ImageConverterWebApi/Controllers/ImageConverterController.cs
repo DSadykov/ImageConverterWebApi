@@ -18,21 +18,8 @@ public class ImageConverterController : ControllerBase
     }
 
     [HttpPost(Name = "ConvertImage")]
-    public IFormFile Post([FromForm] InputImageModel imageModel)
+    public async Task<IFormFile> Post([FromForm] InputImageModel imageModel)
     {
-        return _imageConverter.ConvertImage(imageModel);
+        return await Task.Run((() => _imageConverter.ConvertImage(imageModel)));
     }
-    //[HttpPost(Name = "PostImage")]
-    //public async Task<OutputImageModel> Post(string imageModel)
-    //{
-    //    try
-    //    {
-    //        var tmp = Request.Form.Files;
-    //        return new OutputImageModel() { ImageName = tmp.FirstOrDefault()?.FileName ?? "NULL CAME" };
-    //    }
-    //    catch (Exception)
-    //    {
-    //        return new OutputImageModel() { ImageName = "NULL FORM" };
-    //    }
-    //}
 }
