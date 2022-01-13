@@ -7,4 +7,5 @@ public interface IImageConverter
     byte[] ConvertImage(byte[] imageBytes);
     IFormFile ConvertImage(IFormFile imageFile);
     void SetConverter(AbstructConverter converter);
+    Type GetConverterType();
 }
