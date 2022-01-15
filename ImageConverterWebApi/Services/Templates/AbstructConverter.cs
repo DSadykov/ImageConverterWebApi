@@ -19,14 +19,15 @@ public abstract class AbstructConverter
     public IFormFile Convert(IFormFile imageFile)
     {
         ImageFormat outputFormat = SetOutputFormat();
-        using var inStream = new MemoryStream();
-        using var outStream = new MemoryStream();
-        var imageStream = Image.FromStream(imageFile.OpenReadStream());
+        using Stream? inStream = imageFile.OpenReadStream();
+        var outStream = new MemoryStream();
+        var imageStream = Image.FromStream(inStream);
         imageStream.Save(outStream, outputFormat);
-        var result = new FormFile(outStream, 0, outStream.Length, imageFile.Name, Path.ChangeExtension(imageFile.FileName, outputFormat.ToString()))
+        var outputFormatString = outputFormat.ToString().ToLower();
+        var result = new FormFile(outStream, 0, outStream.Length, imageFile.Name, Path.ChangeExtension(imageFile.FileName, outputFormatString))
         {
             Headers = new HeaderDictionary(),
-            ContentType = imageFile.ContentType,
+            ContentType = $"image/{outputFormatString}",
         };
         return result;
     }
