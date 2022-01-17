@@ -1,4 +1,3 @@
-using ImageConverterWebApi.Controllers;
 using ImageConverterWebApi.Models;
 using ImageConverterWebApi.Services;
 
@@ -18,25 +17,23 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-
 app.UseRouting();
 app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseHttpLogging();
 app.UseAuthorization();
 app.MapControllers();
-//app.UseMiddleware<MiddlewareTest>();
+
 app.Urls.Add("http://*:7777");
 
 app.Run();
 
-static void ConfigureServices(IServiceCollection services, ConfigurationManager configurationManager)
+static void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
 {
     services.AddControllers();
-    services.Configure<ConfigurationModel>(configurationManager.GetSection("MyConfiguration"));
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    services.Configure<ConfigurationModel>(configuration.GetSection("MyConfiguration"));
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
-    services.AddTransient<MiddlewareTest>();
     services.AddTransient<IImageConverter, ImageConverter>();
     services.AddTransient<ImageConverterService, ImageConverterService>();
     services.AddCors();
