@@ -22,6 +22,7 @@ app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseHttpLogging();
 app.UseAuthorization();
 app.MapControllers();
+app.UseMiddleware<LoggingMiddleware>();
 
 app.Urls.Add("http://*:7777");
 
@@ -34,6 +35,7 @@ static void ConfigureServices(IServiceCollection services, ConfigurationManager 
     services.Configure<ConfigurationModel>(configuration.GetSection("MyConfiguration"));
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
+    services.AddTransient<LoggingMiddleware>();
     services.AddTransient<IImageConverter, ImageConverter>();
     services.AddTransient<ImageConverterService, ImageConverterService>();
     services.AddCors();
