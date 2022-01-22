@@ -1,6 +1,7 @@
 using ImageConverterWebApi.Models;
 using ImageConverterWebApi.Services;
 using ImageConverterWebApi.Services.DB;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -36,10 +37,14 @@ static void ConfigureServices(IServiceCollection services, ConfigurationManager 
     services.AddControllers();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     services.AddDbContext<UsersDBContext>(options => options.UseSqlite(connectionString));
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     services.Configure<ConfigurationModel>(configuration.GetSection("MyConfiguration"));
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
+    services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options => //CookieAuthenticationOptions
+        {
+            options.LoginPath = new PathString("/Account/Login");
+        });
     services.AddTransient<LoggingMiddleware>();
     services.AddTransient<IImageConverter, ImageConverter>();
     services.AddTransient<ImageConverterService, ImageConverterService>();
