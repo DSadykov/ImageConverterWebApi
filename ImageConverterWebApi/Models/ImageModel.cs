@@ -1,11 +1,14 @@
-﻿namespace ImageConverterWebApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ImageConverterWebApi.Models
 {
-    public class ImageModel
+    [Table("ImageModels")]
+    public class ImageModel : ImageModelBase
     {
-        public int Id { get; set; }
-        public string FromImageName { get; set; }
-        public string ConvertedImageName { get; set; }
-        public byte[] ConvertedImage { get; set; }
+        public byte[] ConvertedImageBytes { get; set; }
+        public string ContentType { get; set; }
+        [ForeignKey("Users")]
+        public int UserId { get; set; }
         public UserModel User { get; set; }
     }
 }

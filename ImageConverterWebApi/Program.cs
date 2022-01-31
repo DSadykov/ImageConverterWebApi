@@ -20,28 +20,31 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors(builder => builder.AllowAnyOrigin());
+app.UseCors(builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 app.UseHttpLogging();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseMiddleware<LoggingMiddleware>();
-
+app.UseMiddleware<JwtMiddleware>();
 app.Urls.Add("http://*:7777");
 
 app.Run();
 
 static void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
 {
+    services.AddCors();
     services.AddControllers();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     services.AddDbContext<UsersDBContext>(options => options.UseSqlite(connectionString));
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     services.Configure<ConfigurationModel>(configuration.GetSection("MyConfiguration"));
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
+    services.AddTransient<IUserService, UserService>();
     services.AddTransient<LoggingMiddleware>();
+    services.AddTransient<JwtMiddleware>();
     services.AddTransient<IImageConverter, ImageConverter>();
     services.AddTransient<ImageConverterService, ImageConverterService>();
-    services.AddCors();
 }

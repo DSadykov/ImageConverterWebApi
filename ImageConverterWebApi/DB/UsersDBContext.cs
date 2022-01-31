@@ -10,7 +10,7 @@ public class UsersDBContext : DbContext
     public UsersDBContext(DbContextOptions<UsersDBContext> options)
             : base(options)
     {
-        Database.Migrate();
+        Database.EnsureCreated();
     }
     public DbSet<UserModel> Users { get; set; }
 }
