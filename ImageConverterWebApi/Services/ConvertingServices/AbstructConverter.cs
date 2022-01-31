@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using ImageConverterWebApi.Models;
 
 namespace ImageConverterWebApi.Services.Templates;
 
@@ -16,7 +17,7 @@ public abstract class AbstructConverter
             return outStream.ToArray();
         }
     }
-    public IFormFile Convert(IFormFile imageFile)
+    public ImageModel Convert(IFormFile imageFile)
     {
         ImageFormat outputFormat = SetOutputFormat();
         using Stream? inStream = imageFile.OpenReadStream();
@@ -24,10 +25,12 @@ public abstract class AbstructConverter
         var imageStream = Image.FromStream(inStream);
         imageStream.Save(outStream, outputFormat);
         var outputFormatString = outputFormat.ToString().ToLower();
-        var result = new FormFile(outStream, 0, outStream.Length, imageFile.Name, Path.ChangeExtension(imageFile.FileName, outputFormatString))
+        var result = new ImageModel()
         {
-            Headers = new HeaderDictionary(),
             ContentType = $"image/{outputFormatString}",
+            ConvertedImageBytes = outStream.ToArray(),
+            ConvertedImageName = Path.ChangeExtension(imageFile.FileName, outputFormatString),
+            FromImageName = imageFile.FileName
         };
         return result;
     }

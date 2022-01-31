@@ -1,4 +1,4 @@
-﻿using System;
+﻿using ImageConverterWebApi.Models;
 using ImageConverterWebApi.Services.Templates;
 
 namespace ImageConverterWebApi.Services;
@@ -11,7 +11,7 @@ public class ImageConverter : IImageConverter
         return _converter.Convert(imageBytes);
     }
 
-    public IFormFile ConvertImage(IFormFile imageFile)
+    public ImageModel ConvertImage(IFormFile imageFile)
     {
         return _converter.Convert(imageFile);
     }
