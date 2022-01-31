@@ -23,7 +23,11 @@ namespace ImageConverterWebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte[]>("ConvertedImage")
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("ConvertedImageBytes")
                         .IsRequired()
                         .HasColumnType("BLOB");
 

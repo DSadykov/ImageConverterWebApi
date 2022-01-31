@@ -21,7 +21,9 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors(builder => builder.AllowAnyOrigin());
+app.UseCors(builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 app.UseHttpLogging();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -34,6 +36,7 @@ app.Run();
 
 static void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
 {
+    services.AddCors();
     services.AddControllers();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     services.AddDbContext<UsersDBContext>(options => options.UseSqlite(connectionString));
