@@ -5,7 +5,6 @@ namespace ImageConverterWebApi.Services.DB;
 
 public class UsersDBContext : DbContext
 {
-    private readonly string _connectionString;
 
     public UsersDBContext(DbContextOptions<UsersDBContext> options)
             : base(options)
@@ -13,4 +12,11 @@ public class UsersDBContext : DbContext
         Database.EnsureCreated();
     }
     public DbSet<UserModel> Users { get; set; }
+    public DbSet<ImageModel> ImageModels { get; set; }
+    public void AddImageToUserById(int userId, ImageModel imageModel)
+    {
+        UserModel? user = Users.FirstOrDefault(x => x.Id == userId);
+        user?.ConvertedImages.Add(imageModel);
+        SaveChanges();
+    }
 }
