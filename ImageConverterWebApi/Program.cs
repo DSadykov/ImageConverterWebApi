@@ -43,11 +43,7 @@ static void ConfigureServices(IServiceCollection services, ConfigurationManager 
     services.Configure<ConfigurationModel>(configuration.GetSection("MyConfiguration"));
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
-    services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options => //CookieAuthenticationOptions
-        {
-            options.LoginPath = new PathString("/Account/Login");
-        });
+    services.AddTransient<IUserService, UserService>();
     services.AddTransient<LoggingMiddleware>();
     services.AddTransient<IImageConverter, ImageConverter>();
     services.AddTransient<ImageConverterService, ImageConverterService>();
