@@ -14,12 +14,12 @@ public class ImageConverterService
         _logger = logger;
     }
 
-    public IFormFile ConvertImage(InputImageModel imageModel)
+    public ImageModel ConvertImage(InputImageModel imageModel)
     {
         SetConverter(imageModel.ExtensionTo);
         _logger.LogInformation("Successfuly set converter to {imageConverterType}", _imageConverter.GetConverterType().Name);
-        IFormFile? convertedImage = _imageConverter.ConvertImage(imageModel.ImageFile);
-        _logger.LogInformation("Successfuly converted image to {toExtension}", Path.GetExtension(convertedImage.FileName));
+        ImageModel? convertedImage = _imageConverter.ConvertImage(imageModel.ImageFile);
+        _logger.LogInformation("Successfuly converted image to {toExtension}", Path.GetExtension(convertedImage.ConvertedImageName));
         return convertedImage;
     }
 
