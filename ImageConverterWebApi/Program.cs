@@ -1,7 +1,6 @@
 using ImageConverterWebApi.Models;
 using ImageConverterWebApi.Services;
 using ImageConverterWebApi.Services.DB;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -29,7 +28,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseMiddleware<LoggingMiddleware>();
-
+app.UseMiddleware<JwtMiddleware>();
 app.Urls.Add("http://*:7777");
 
 app.Run();
@@ -45,7 +44,7 @@ static void ConfigureServices(IServiceCollection services, ConfigurationManager 
     services.AddSwaggerGen();
     services.AddTransient<IUserService, UserService>();
     services.AddTransient<LoggingMiddleware>();
+    services.AddTransient<JwtMiddleware>();
     services.AddTransient<IImageConverter, ImageConverter>();
     services.AddTransient<ImageConverterService, ImageConverterService>();
-    services.AddCors();
 }
