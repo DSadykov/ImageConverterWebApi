@@ -364,5 +364,5 @@ FodyWeavers.xsd
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
-appsettings.Development.json
 appsettings.json
+appsettings.Development.json
