@@ -6,65 +6,42 @@ using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
-try
+
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
+
+ConfigureServices(builder.Services, builder.Configuration);
+
+WebApplication? app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
-    // Add services to the container.
-
-    ConfigureServices(builder.Services, builder.Configuration);
-
-    WebApplication? app = builder.Build();
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-    else
-    {
-        app.UseExceptionHandler("/Error");
-    }
-
-    //app.UseHttpsRedirection();
-    app.UseDeveloperExceptionPage();
-    app.UseRouting();
-    app.UseCors(builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-    app.UseHttpLogging();
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.MapControllers();
-    app.UseMiddleware<LoggingMiddleware>();
-    app.UseMiddleware<JwtMiddleware>();
-    //if (!app.Environment.IsDevelopment())
-    //{
-    //    app.Urls.Add("http://*:7777");
-    //}
-    app.Run();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-catch (Exception e)
+else
 {
-
-    var message = new string[] { e.Message, e?.StackTrace, e?.InnerException?.Message };
-    var mailMessage = new MimeMessage();
-    mailMessage.From.Add(new MailboxAddress("from name", "d.sadykov@inbox.ru"));
-    mailMessage.To.Add(new MailboxAddress("to name", "d.sadykov@inbox.ru"));
-    mailMessage.Subject = "subject";
-    mailMessage.Body = new TextPart("plain")
-    {
-        Text = string.Join('\n', message)
-    };
-    using (var smtpClient = new SmtpClient())
-    {
-        smtpClient.Connect("smtp.mail.ru", 465, true);
-        smtpClient.Authenticate("d.sadykov@inbox.ru", "CittJTRitVs1DtX394kP");
-        smtpClient.Send(mailMessage);
-        smtpClient.Disconnect(true);
-    }
-    throw;
+    app.UseExceptionHandler("/Error");
 }
+app.UseHttpsRedirection();
+app.UseDeveloperExceptionPage();
+app.UseRouting();
+app.UseCors(builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+app.UseHttpLogging();
+#if DEBUG
+app.Urls.Add("http://*:7777");
+#endif
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
+app.Run();
+
+
 static void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
 {
     services.AddCors();
@@ -73,6 +50,7 @@ static void ConfigureServices(IServiceCollection services, ConfigurationManager 
     services.AddDbContext<UsersDBContext>(options => options.UseMySql(connectionString,
         new MySqlServerVersion(new Version(10, 5, 10))));
     services.Configure<ConfigurationModel>(configuration.GetSection("MyConfiguration"));
+    services.AddHttpsRedirection(options => options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect);
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
     services.AddTransient<IUserService, UserService>();
